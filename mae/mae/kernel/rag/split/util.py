@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import List
+from langchain_community.document_loaders import Docx2txtLoader
 
 from langchain_community.document_loaders import PyPDFLoader
 import time
@@ -7,6 +8,7 @@ from mae.utils.files.split import split_txt_by_langchain
 
 from langchain_core.documents import Document
 
+from mae.utils.string.split import split_str_to_docs
 from mae.utils.variable.util import generate_unique_int
 
 
@@ -45,4 +47,11 @@ def split_files(files_path: List[str], chunk_size: int = 256, encoding: str = 'u
                     id_num += 1
                     doc.metadata['id'] = generate_unique_int()
                     all_data.append(doc)
+            elif file_extension == ".doc" or file_extension == ".docx":
+                loader = Docx2txtLoader(file_path)
+                docs = loader.load_and_split()
+                docs_str = ""
+                for doc in docs:
+                    docs_str += doc.page_content.replace("\n\n\n\n\n\n\n\n","")
+                all_data = split_str_to_docs(string=docs_str,chunk_size=chunk_size)
     return all_data

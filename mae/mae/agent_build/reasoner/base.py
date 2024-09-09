@@ -8,33 +8,24 @@ from mae.agent_build.base.module import BaseModule
 
 from mae.agent_build.base.signature import init_costar_signature, costar_signature
 from mae.kernel.rag.embedding.huggingface import load_embedding_model
-from mae.kernel.rag.vector.pgvector import create_pgvector, upload_files_to_vector, \
-    delete_vector_collection, search_vector
+from mae.kernel.rag.vector.pgvector import create_pgvector, delete_vector_collection
+from mae.kernel.rag.vector.util import search_vector, upload_files_to_vector
 from mae.utils.ai.util import json_output_openai_result
+from mae.utils.database.vector.chromadb import create_chroma_db_conn_with_langchain
 
 
 class BaseRag(BaseModule):
-    def __init__(self,role:str=None,backstory:str=None, module_path:str=None,model_name:str=None, pg_connection:str=None, collection_name:str='my_docs', is_upload_file:bool=False, files_path:Union[List[str],str]=None, model_kwargs:dict={'device':0}, chunk_size:int=256, encoding:str= 'utf-8',multi_process:bool=False,context:str=None,temperature:float=0.7,objective:str=None, specifics:str=None, actions:str=None, results:str=None, example:str=None, answer:str=None,input_fields:dict=None):
+    def __init__(self,role:str=None,backstory:str=None, module_path:str=None,model_name:str=None, pg_connection:str=None, collection_name:str='my_docs', is_upload_file:bool=False, files_path:Union[List[str],str]=None, model_kwargs:dict={'device':0}, chunk_size:int=256, encoding:str= 'utf-8',multi_process:bool=False,context:str=None,temperature:float=0.7,objective:str=None, specifics:str=None, actions:str=None, results:str=None, example:str=None, answer:str=None,input_fields:dict=None,chroma_path:str=None):
         super().__init__(temperature=temperature,context=context,role=role,backstory=backstory,objective=objective, specifics=specifics, actions=actions, results=results, example=example, answer=answer,input_fields=input_fields)
 
         self.embedding = load_embedding_model(module_path=module_path,model_kwargs=model_kwargs,multi_process=multi_process,model_name=model_name)
-        self.vectorstore = create_pgvector(embedding=self.embedding, collection_name=collection_name, pg_connection=pg_connection)
+        if pg_connection is None and chroma_path is not None:
+            self.vectorstore = create_chroma_db_conn_with_langchain(embedding=self.embedding,db_path=chroma_path)
+        elif chroma_path is None and pg_connection is not None:
+            self.vectorstore = create_pgvector(embedding=self.embedding, collection_name=collection_name, pg_connection=pg_connection)
         if is_upload_file is True and files_path is not None:
-            # if isinstance(files_path,str):
-            #     upload_files_to_vector(vectorstore=self.vectorstore, files_path=files_path, chunk_size=chunk_size,
-            #                            encoding=encoding)
-            # elif isinstance(files_path,list):
-            #     for file_path in files_path:
-            #         file_collection_name = Path(file_path).name
-            #         self.embedding = load_embedding_model(module_path=module_path, model_kwargs=model_kwargs,
-            #                                               multi_process=multi_process, model_name=model_name)
-            #         self.vectorstore = create_pgvector(embedding=self.embedding, collection_name=file_collection_name,
-            #                                            pg_connection=pg_connection)
-            #         upload_files_to_vector(vectorstore=self.vectorstore, files_path=files_path, chunk_size=chunk_size,
-            #                                encoding=encoding)
             try:
                 # self.vectorstore.drop_tables()
-
                 upload_files_to_vector(vectorstore=self.vectorstore,files_path=files_path, chunk_size=chunk_size, encoding=encoding)
             except Exception as e :
                 self.embedding = load_embedding_model(module_path=module_path, model_kwargs=model_kwargs,

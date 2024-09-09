@@ -9,9 +9,9 @@ RAG:
 #  MODULE_PATH: /mnt/c/Users/chenzi/Desktop/project/model/bce-embedding-base_v1
   MODULE_PATH: null
   RAG_MODEL_NAME: text-embedding-3-small
-  PG_CONNECTION: postgresql+psycopg://langchain:langchain@192.168.0.75:6024/langchain
   COLLECTION_NAME: mae
   IS_UPLOAD_FILE: true
+  CHROMA_PATH: ./data/output/chroma_store
   FILES_PATH:
     - ./data/output/arxiv_papers
   ENCODING: utf-8

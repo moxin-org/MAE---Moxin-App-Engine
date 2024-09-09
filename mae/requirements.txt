@@ -47,6 +47,8 @@ uvicorn
 
 # --------- db --------- #
 psycopg[binary]
+langchain-chroma
+chromadb
 # faiss-cpu
 
 

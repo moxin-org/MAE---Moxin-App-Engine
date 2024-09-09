@@ -36,6 +36,7 @@ class Operator:
                 result = """
                                 """
                 if 'agents' not in inputs.keys():
+                    print("inputs: ",inputs)
                     inputs['task'] = task
                     result = run_dspy_agent(agent_config=inputs)
                 else:

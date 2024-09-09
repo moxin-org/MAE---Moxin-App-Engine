@@ -92,6 +92,7 @@ def run_dspy_agent(agent_config: dict):
                                          example=agent_config.get('example', None), answer=agent_config.get('answer', None),
                                          input_fields=agent_config.get('input_fields', None), is_upload_file=agent_config.get('is_upload_file', False),
                                          collection_name=agent_config.get('collection_name', 'my_docs'),
+                                         chroma_path=agent_config.get('chroma_path', None),
                                          )
         elif agent_config.get('web_enable') == 'True' or agent_config.get('web_enable') == 'true' or agent_config.get('web_enable') == True:
             reasoner = ReasonerWebSearchModule(role=agent_config.get('role', ''), backstory=agent_config.get('backstory', ''),
