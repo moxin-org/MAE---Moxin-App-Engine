@@ -4,7 +4,6 @@ MoFA中最基本的智能体设计模式的实现
 
 **语言**
 
-- [English](README.md)
 
 ## 1. 功能说明
 
@@ -18,7 +17,6 @@ Reasoner可以说是最简单的智能体。它的设计模式是：定制的大
 - 做一个以“爱因斯坦”的口吻和用户聊天的智能体。
 - 做一个将一个问题分成五个小问题的智能体
 
-等
 
 ## 3. 配置方法
 
@@ -50,9 +48,9 @@ Reasoner可以说是最简单的智能体。它的设计模式是：定制的大
 
    | 文件                            | 说明                                                         |
    | ------------------------------- | ------------------------------------------------------------ |
-   | `hello_world_dataflow.yml`      | 根据当前目录，需要更改`build: pip install -e ../../../node-hub/terminal-input`的路径 |
-   | `configs\hello_world_agent.yml` | 根据定制要求，改写定制Prompts和大语言模型参数等              |
-   | `scripts\reasoner_agent.py`     | 无需更改                                                     |
+   | `hello_world_dataflow.yml`      | 根据当前目录，需要更改`build: pip install -e ../../../node-hub/terminal-input`的路径(可以在mofa/node-hub/terminal-input中找到. 可以填写绝对路径) |
+   | `configs\hello_world_agent.yml` | 根据定制要求，改写定制Prompts和大语言模型参数等. 包括Rag              |
+   | `scripts\reasoner_agent.py`     | 修改`reasoner_agent.py`文件中`yaml_file_path`变量对应的configs的`yml`文件路径                                                     |
 
    
 
@@ -66,7 +64,8 @@ Reasoner可以说是最简单的智能体。它的设计模式是：定制的大
 
 1. 安装MoFA项目包
 2. `dora up && dora build  reasoner_dataflow.yml && dora start reasoner_dataflow.yml`
-3. 在另外一个命令端运行 `terminal-input`
+3. 启动另外一个命令端,在另外一个命令端运行 `terminal-input`.然后输入indeed任务即可
+
 
 ### 方法二：在MoFA运行环境里运行：
 

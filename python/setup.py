@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+
 
 """The setup script."""
 
@@ -10,14 +10,14 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-with open('requirements.txt') as requirements_file:
+with open('requirements.txt',encoding='utf-8') as requirements_file:
     all_pkgs = requirements_file.readlines()
-requirements = [pkg.replace('\n', '') for pkg in all_pkgs]
 
+requirements = [pkg.replace('\n', '') for pkg in all_pkgs if "#" not in pkg]
 test_requirements = []
 
 setup(
-    name='mofa',  # 保持包名称为 mofa
+    name='mofa', 
     author="mofa",
     author_email='cheng.chen@.net',
     python_requires='>=3.10',
