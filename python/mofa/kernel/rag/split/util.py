@@ -1,7 +1,8 @@
 from pathlib import Path
 from typing import List
-from langchain_community.document_loaders import Docx2txtLoader
-
+from langchain_community.document_loaders import Docx2txtLoader, UnstructuredPowerPointLoader, \
+    UnstructuredMarkdownLoader
+from langchain_community.document_loaders import UnstructuredPowerPointLoader
 from langchain_community.document_loaders import PyPDFLoader
 import time
 from mofa.utils.files.split import split_txt_by_langchain
@@ -11,7 +12,13 @@ from langchain_core.documents import Document
 from mofa.utils.string.split import split_str_to_docs
 from mofa.utils.variable.util import generate_unique_int
 
-
+def use_langchain_split_and_gen_ids(loader):
+    all_data = []
+    pages = loader.load_and_split()
+    for doc in pages:
+        doc.metadata['id'] = generate_unique_int()
+        all_data.append(doc)
+    return all_data
 def split_files(files_path: List[str], chunk_size: int = 256, encoding: str = 'utf-8'):
     """
     Split the files from the given list of file paths into chunks and return a list of documents containing the split text.
@@ -54,4 +61,12 @@ def split_files(files_path: List[str], chunk_size: int = 256, encoding: str = 'u
                 for doc in docs:
                     docs_str += doc.page_content.replace("\n\n\n\n\n\n\n\n","")
                 all_data = split_str_to_docs(string=docs_str,chunk_size=chunk_size)
+            elif file_extension == ".ppts" or file_extension == ".ppt":
+                loader = UnstructuredPowerPointLoader(
+                    file_path,
+                )
+                all_data = use_langchain_split_and_gen_ids(loader)
+            elif file_extension == ".md":
+                loader = UnstructuredMarkdownLoader(file_path )
+                all_data = use_langchain_split_and_gen_ids(loader)
     return all_data

@@ -1,4 +1,4 @@
-#!/usr/bin/envs python
+#!/usr/bin/env python
 
 """The setup script."""
 
@@ -17,7 +17,7 @@ requirements = [pkg.replace('\n', '') for pkg in all_pkgs]
 test_requirements = []
 
 setup(
-    name='mofa',
+    name='mofa',  # 保持包名称为 mofa
     author="mofa",
     author_email='cheng.chen@.net',
     python_requires='>=3.10',
@@ -37,7 +37,8 @@ setup(
     long_description=readme + '\n\n' + history,
     include_package_data=True,
     keywords='mofa',
-    packages=find_packages(include=['mofa', 'mofa.*']),
+    packages=find_packages(where='python', include=['mofa', 'mofa.*']),
+    package_dir={'mofa': 'python/mofa'},
     test_suite='tests',
     tests_require=test_requirements,
     version='0.1.1.dev0',
