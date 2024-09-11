@@ -39,7 +39,7 @@ git clone <repository-url> && git checkout <branch-name>
 **示例**:
 
 ```sh
-git clone git@github.com:moxin-org/Moxin-App-Engine.git && cd Moxin-App-Engine/mae && git checkout feature/mae
+git clone git@github.com:moxin-org/mofa.git && cd mofa && git checkout feature/mofa
 ```
 
 2. 使用Python 3.10或以上环境：
@@ -55,11 +55,11 @@ conda create -n py310 python=3.10.12 -y
 - 安装环境的依赖：
 
 ```sh
-pip3 install -r requirements.txt && pip3 install -e .
+cd python && pip3 install -r requirements.txt && pip3 install -e .
 
 ```
 
-安装完毕之后，可以使用`mae --help`命令查看Cli帮助信息
+安装完毕之后，可以使用`mofa --help`命令查看Cli帮助信息
 
 4. Rust和Dora-RS安装
 
@@ -69,28 +69,11 @@ pip3 install -r requirements.txt && pip3 install -e .
 https://www.rust-lang.org/tools/install
 ```
 
-安装 dora(v0.3.6-rc0)或以后的版本。安装步骤如下：
-
-~~~
-sudo rm $(which dora)
-pip uninstall dora-rs
-
-## dora binary
-git clone https://github.com/dora-rs/dora.git
-cd dora
-cargo build --release -p dora-cli
-PATH=$PATH:$(pwd)/target/release
-
-## Python API
-maturin develop -m apis/python/node/Cargo.toml
-
-dora --help
-~~~
 
 ### 2. 配置
 
-在 `Moxin-App-Engine/mae/example` 这个目录下, 我们提供一些可用的智能体案例。在使用时，首先需要对智能体的configs目录下面的yml文件进行配置。 
-如果`node`使用的是pip的方式进行安装的. 那么请你到`agent-hub`中找到对应的名称,并且修改里面的`yml`文件
+在 `examples` 这个目录下, 我们提供一些可用的智能体案例。在使用时，首先需要对智能体的configs目录下面的yml文件进行配置。 
+如果`node`如果使用的是pip的方式进行安装的. 那么请你到`agent-hub`中找到对应的node的名称,并且修改里面的`yml`文件
 
 大语言模型推理 Api配置示例：
 使用**Openai**API：
@@ -114,6 +97,23 @@ MODEL:
   MODEL_API_URL: http://192.168.0.1:11434
 ~~~
 
+**如何进行Rag的配置**？
+主要修改`yml`中的Rag参数
+~~~
+RAG:
+  RAG_ENABLE: false   # 是否启动Rag的功能
+  MODULE_PATH: null  # 如果没有本地的embedding模型, 可以传递null
+  RAG_MODEL_NAME: text-embedding-3-small  # 如果使用Openai的embedding模型，在这里配置Openai的embedding模型名称.
+  COLLECTION_NAME: mofa # Vector中的集合名称，使用默认值即可
+  IS_UPLOAD_FILE: true # 是否需要将文件上传到Vector中，如果上传则传递true，否则传递false
+  CHROMA_PATH: ./data/output/chroma # 本地向量数据库保存的地址
+  FILES_PATH: # 需要上传的文件地址，可以一次配置多个文件
+    - ./data/output/arxiv_papers
+  ENCODING: utf-8  # 文件编码格式 
+  CHUNK_SIZE: 256 # 分割的文本大小，建议默认值256
+  RAG_SEARCH_NUM: 2 # 数值越大，通过RAG查询的结果越多，相应的LLM接收的数据也越多，注意不要超过LLM最大的token数量
+~~~
+
 ### 3. 启动
 
 在命令端启用MOFA智能体
@@ -123,21 +123,21 @@ MODEL:
 **获取当前可用Agent**:
 
 ~~~ /shell
-mae agent-list
+mofa agent-list
 ~~~
 
 **运行Agent**:
 
 ~~~ /shell
-mae run --agent-name reasoner
+mofa run --agent-name reasoner
 ~~~
 
-关闭Agent? 
+如何关闭Agent命令端? 
 输入exit/quit即可关闭
 
-注意: 如果遇到Dora卡死的情况怎么办? 
+**Q:** 如果遇到Dora卡死的情况怎么办? 
 
-**A:** :  建议在sudo命令下面使用 
+**A:**   建议在sudo命令下面使用 
 
 ~~~
 pkill dora 
@@ -187,11 +187,8 @@ AI智能体就是有智能特点的计算机软件。随着大语言模型和应
 
 ## 示例
 
-您可以在[examples](./examples)目录下测试MOFA的不同示例：
-
-[simplicity.ai](examples/simplicity.ai): 一个由两个智能体组合而实现类似Perplexity.ai式用户体验的搜索案例。因为我们搜索的功能是通过简单调用Google Search API实现的，所以我们叫它simplicity。
-
-[agent_fight](examples/agent_fight): 一个让大语言模型(GPT4o)做裁判，为完成同一任务的不同智能体所生成的报告进行评估，判定分数和胜负的智能体。
-
-[arXiv_research](examples/arxiv_research)：一个通过搜索arXiv论文数据库，下载论文，总结论文并写出研究报告的，由多个智能体构成的组合智能体。
-
+您可以在 [examples](python/examples)目录下找到MOFA的不同示例：
+1. [simplexity_ai](python/examples/simplexity_ai): 一个由两个智能体组合而实现类似Perplexity.ai式用户体验的搜索案例。因为我们搜索的功能是通过简单调用Google Search API实现的，所以我们叫它simplicity。
+2. [agent_fight](python/examples/agent_fight): 一个让大语言模型(GPT4o)做裁判，为完成同一任务的不同智能体所生成的报告进行评估，判定分数和胜负的智能体。
+3. [arxiv_research](python/examples/arxiv_research): 一个通过搜索arXiv论文数据库，下载论文，总结论文并写出研究报告的，由多个智能体构成的组合智能体。
+4. [query_assistant](python/examples/query_assistant): 一个最简单的根据你的问题进行回答的Agent.

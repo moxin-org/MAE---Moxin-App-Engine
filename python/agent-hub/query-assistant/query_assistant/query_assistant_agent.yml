@@ -8,7 +8,7 @@ RAG:
   MODULE_PATH: /Users/chenzi/project/module/bce-embedding-base_v1
 #  MODULE_PATH: null
   RAG_MODEL_NAME: null
-  PG_CONNECTION: postgresql+psycopg://langchain:langchain@192.168.0.75:6024/langchain
+  CHROMA_PATH: ./data/output/chroma_store
   COLLECTION_NAME: mofa
   IS_UPLOAD_FILE: true
   FILES_PATH:
