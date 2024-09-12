@@ -14,9 +14,9 @@
 ### 方法一：在Dora-rs命令里运行：
 
 1. 安装MoFA项目包
-2. `dora up && dora build  reasoner_dataflow.yml && dora start reasoner_dataflow.yml`
+2. `dora up && dora build  agent_fight_dataflow.yml && dora start reasoner_dataflow.yml`
 3. 启动另外一个命令端,在另外一个命令端运行 `multiple-terminal-input`.然后输入需要输入三个参数
    - **primary_data** : 第一个agent的结果(可以传输一个markdown的文件路径,要求是绝对路径)
    - **second_data** : 第二个agent的结果(可以传输一个markdown的文件路径,要求是绝对路径)
-   - **comparison_task** : 生成agent结果的任务. 例如: "primary_data"和"second_data"都是通过同一个任务去生成的. 
+   - **source_task** : 生成agent结果的任务. 例如: "primary_data"和"second_data"都是通过同一个任务去生成的. 
  

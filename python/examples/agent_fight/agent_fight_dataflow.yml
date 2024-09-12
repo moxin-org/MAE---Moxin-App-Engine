@@ -5,7 +5,7 @@ nodes:
     outputs:
       - primary_data
       - second_data
-      - comparison_task
+      - source_task
     inputs:
       evaluation_result: content-evaluation-agent/evaluation_result
   - id: content-evaluation-agent
@@ -14,7 +14,7 @@ nodes:
     inputs:
       primary_data: multiple-terminal-input/primary_data
       second_data: multiple-terminal-input/second_data
-      comparison_task: multiple-terminal-input/comparison_task
+      source_task: multiple-terminal-input/source_task
     outputs:
       - evaluation_result
     env:

@@ -42,7 +42,7 @@ def main():
         default=None
     )
     parser.add_argument(
-        "--comparison-task",
+        "--source-task",
         type=str,
         required=False,
         help="Evaluate the tasks corresponding to the two pieces of content.",
@@ -52,17 +52,17 @@ def main():
     node = Node(
         args.name
     )
-    primary_data,second_data,comparison_task = args.primary_data,args.second_data,args.comparison_task
+    primary_data,second_data,source_task = args.primary_data,args.second_data,args.source_task
     for event in node:
         if event["type"] == "INPUT" :
             if event['id'] == 'primary_data': primary_data = event["value"][0].as_py()
             if event['id'] == 'second_data': second_data = event["value"][0].as_py()
-            if event['id'] == 'comparison_task': comparison_task = event["value"][0].as_py()
+            if event['id'] == 'source_task': source_task = event["value"][0].as_py()
 
-            if comparison_task is not None and primary_data is not None and second_data is not None:
+            if source_task is not None and primary_data is not None and second_data is not None:
                 primary_data = read_file_content(primary_data)
                 second_data = read_file_content(second_data)
-                evaluation_data = {'primary_data':primary_data,'second_data':second_data,'comparison_task':comparison_task}
+                evaluation_data = {'primary_data':primary_data,'second_data':second_data,'source_task':source_task}
                 yaml_file_path = f'{agent_config_dir_path}/content_evaluation_agent.yml'
                 inputs = load_agent_config(yaml_file_path)
                 record_agent_prompt_log(agent_config=inputs, config_file_path=yaml_file_path, log_key_name='Agent Prompt', task=inputs.get('task'))
@@ -77,7 +77,7 @@ def main():
                                                                                    dataflow_status=os.getenv(
                                                                                        "IS_DATAFLOW_END",
                                                                                        True))]), event['metadata'])
-                primary_data,second_data,comparison_task = None,None,None
+                primary_data,second_data,source_task = None,None,None
 
 
 if __name__ == "__main__":
