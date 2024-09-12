@@ -11,7 +11,7 @@ from mofa.utils.variable.util import while_input
 
 
 def agent_evaluation_cmd():
-    agent_name = 'agent_evaluation'
+    agent_name = 'agent_fight'
     agent_path = agent_dir_path + f'/{agent_name}'
     agent_dataflow_path = agent_path + f'/{agent_name}_dataflow.yml'
 
@@ -68,7 +68,7 @@ def agent_evaluation_cmd():
                 secondary_task = while_input("Send secondary data: ")
                 if send_task_or_stop_process(task=secondary_task,dora_dataflow_process=dora_dataflow_process,task_input_process=task_input_process,dataflow_name=dataflow_name) == False:
                     break
-                generate_data_task = while_input("Send comparison task: ")
+                generate_data_task = while_input("Send source task: ")
                 if send_task_or_stop_process(task=generate_data_task,dora_dataflow_process=dora_dataflow_process,task_input_process=task_input_process,dataflow_name=dataflow_name) == False:
                     break
                 while True:

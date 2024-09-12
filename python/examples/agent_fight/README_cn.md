@@ -9,7 +9,7 @@
 ## 3. 配置方法
 通过更改`agent-hub`下面的`content-evaluation`目录下面的`content_evaluation_agent.yml`模版里的配置信息来对`Prompt`等进行修改
 
-## 4. 运行Agent
+## 4. 运行AgentFight
 
 ### 方法一：在Dora-rs命令里运行：
 
