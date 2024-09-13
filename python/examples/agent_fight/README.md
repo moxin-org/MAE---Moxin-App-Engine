@@ -1,15 +1,17 @@
 # Agent Fight
 
 ## 1. Overview
-This tool is designed to compare and evaluate the results of two agents and/or LLMs. It provides scoring and assessment across various dimensions for each agent's results.
+This tool is designed to compare and evaluate the results of two agents and/or LLMs. AgentFight is powered by LLM itself, to score both agent/llm's results, across various dimensions.
 
 ## 2. Use Cases
-Evaluate the performance of different agents in competitions by assessing their results.
+Evaluate and compare the performance of two different agent/llms, in terms of the quality of their results.
 
 ## 3. Configuration
-To modify the `Prompt` and other settings, update the `content_evaluation_agent.yml` file, located in the `content-evaluation` directory under `agent-hub`.
+AgentFight utilize llm to be the judge. The judge rules are written with prompt. 
 
-## 4. Running AgnetFight
+To modify the `Prompt`, i.e. the judge rules, and other settings, please update the `content_evaluation_agent.yml` file, located in the `content-evaluation` directory under `agent-hub`.
+
+## 4. Running AgentFight
 
 ### Method 1: Using Dora-rs Commands
 
