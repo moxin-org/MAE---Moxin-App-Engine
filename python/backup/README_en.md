@@ -127,7 +127,7 @@ agents
 ```
 
 ### 4.2 Configuration Instructions
-[Agent Configuration Instructions](./config/Agent_Config_en.md)
+[Agent Configuration Instructions](../docs/config/Agent_Config_en.md)
 
 ## 5. Startup Considerations
 

@@ -39,5 +39,3 @@ class Operator:
 
 
 
-# agent_evaluation -> agent fight
-# web_search -> simple ai

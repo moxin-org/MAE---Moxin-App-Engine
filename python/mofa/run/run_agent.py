@@ -1,5 +1,9 @@
 import os
+import time
+
 import dspy
+from lxml.parser import result
+
 from mofa.agent_build.crewai.manage import create_agent, create_task, setup_crew
 from mofa.agent_build.reasoner.reasoner import ReasonerModule, ReasonerRagModule, ReasonerWebSearchModule
 from mofa.agent_build.self_refine.self_refine import SelfRefineModule, SelfRefineRagModule
@@ -144,8 +148,13 @@ def run_dspy_agent(agent_config: dict):
     return answer
 
 def run_dspy_or_crewai_agent(agent_config:dict):
-    if 'agents' not in agent_config.keys():
-        result = run_dspy_agent(agent_config=agent_config)
-    else:
-        result = run_crewai_agent(crewai_config=agent_config)
-    return result
+    try:
+        if 'agents' not in agent_config.keys():
+            result = run_dspy_agent(agent_config=agent_config)
+        else:
+            result = run_crewai_agent(crewai_config=agent_config)
+        return result
+    except Exception as e :
+        print(e)
+        raise RuntimeError(str(e))
+
