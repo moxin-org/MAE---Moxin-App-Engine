@@ -20,6 +20,6 @@ To modify the `Prompt`, i.e. the judge rules, and other settings, please update 
    ```bash
    dora up && dora build agent_fight_dataflow.yml && dora start reasoner_dataflow.yml
 3. Open another terminal and run multiple-terminal-input. Enter the following three parameters:
-   - **primary_data**: The result of the first agent (provide an absolute path to a Markdown file).
-   - **second_data**: The result of the second agent (provide an absolute path to a Markdown file).
-   - **source_task**: The task that generated the agent results. For example, both "primary_data" and "second_data" are generated from the same task.
+   - **primary_data**: The result of the first agent/llm (provide an absolute path to a Markdown file).
+   - **second_data**: The result of the second agent/llm (provide an absolute path to a Markdown file).
+   - **source_task**: The task that generated the agent/llm results. We assume that the same task was assigned to two agent/llms. both "primary_data" and "second_data" are generated, respectively by the two agent/llm, with the same source_task.
