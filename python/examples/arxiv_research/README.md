@@ -1,5 +1,7 @@
 ### Paper Super Agent Example
 
+This is a showcase how a relatively complicated composition agent is built.
+
 **Task Objective:**
 - Based on the user's requirements, search for relevant papers on arXiv, download the corresponding papers based on their titles, and summarize the best solution to the task based on the user's questions and the content of the papers.
 
