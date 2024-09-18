@@ -1,13 +1,13 @@
 
 ---
 
-# Simplexity AI Example in MoFA
+# Simplicity Ai Example in MoFA
 
 
 
 ## 1. 功能说明
 
-该Web Search智能体用于根据用户任务输入的内容，从Google中搜索相关数据，自动生成总结，并提出与任务相关联的进一步问题。设计模式为：**Google搜索 + 内容总结 + 生成相关问题**。
+该Simplicity Ai智能体用于根据用户任务输入的内容，从Google中搜索相关数据，自动生成总结，并提出与任务相关联的进一步问题。设计模式为：**Google搜索 + 内容总结 + 生成相关问题**。
 
 ## 2. 使用场景
 

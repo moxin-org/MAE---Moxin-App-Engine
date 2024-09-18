@@ -1,6 +1,6 @@
+from mofa.utils.database.vector.chromadb import create_chroma_db_conn, add, query, delete, update
 import pytest
 
-from utils.database.vector.chromadb import create_chroma_db_conn, add, query, delete, update
 
 
 def test_create_chroma_db_conn(mocker):

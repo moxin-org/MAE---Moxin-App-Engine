@@ -41,6 +41,8 @@ duckduckgo-search
 whisper
 arxiv
 
+
+
 # --------- server --------- #
 fastapi
 uvicorn
@@ -69,8 +71,9 @@ python-magic
 python-pptx
 docx2txt
 markdown
+
 # --------- graph database --------- #
-# neo4j
+neo4j
 # neomodel[extras]
 
 
@@ -81,6 +84,8 @@ pyyaml
 crewai[tools]
 # pyautogen
 dspy-ai
+mem0ai
+
 
 # --------- distributed --------- #
 dora-rs

@@ -14,5 +14,4 @@ nodes:
       task: terminal-input/data
     outputs:
       - query_assistant_result
-    env:
-      IS_DATAFLOW_END: true
+    

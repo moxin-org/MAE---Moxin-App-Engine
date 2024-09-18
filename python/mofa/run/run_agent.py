@@ -1,9 +1,6 @@
 import os
 import time
-
 import dspy
-from lxml.parser import result
-
 from mofa.agent_build.crewai.manage import create_agent, create_task, setup_crew
 from mofa.agent_build.reasoner.reasoner import ReasonerModule, ReasonerRagModule, ReasonerWebSearchModule
 from mofa.agent_build.self_refine.self_refine import SelfRefineModule, SelfRefineRagModule
