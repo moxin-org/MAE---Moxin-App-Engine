@@ -1,5 +1,9 @@
 # GitCode 比赛流程
 
+## 0. GitCode账号注册
+
+如果您还没有申请GitCode账号，请在GitCode网站（https://gitcode.com) 完成账号注册。
+
 ## 1. Fork 项目与安装
 
 1. **找到项目地址**
@@ -21,7 +25,7 @@
 ## 2. 提交项目
 
 1. **创建 Agent 案例**
-   - 在 `examples` 目录中创建你们的 Agent 案例。
+   - 在 `hackathon` 目录中创建你们的 Agent 案例。
 
 2. **删除敏感信息**
    - 删除案例中的密钥配置，确保项目安全。
