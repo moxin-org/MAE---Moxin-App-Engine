@@ -39,7 +39,7 @@
 
 工具和技能
 
-- [大模型的接入](l lm_interfacing.md) 
+- [大模型的接入](llm_interfacing.md) 
 - [Jupyter Notebook](jupyter_notebook.md) 
 - [提示工程](prompt_engineering.md) 
 - XLang
