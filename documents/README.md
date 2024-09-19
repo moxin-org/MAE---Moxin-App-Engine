@@ -18,9 +18,9 @@
 
     - [模法4：数据流驱动（Dataflow Driven）](mofa_feature_data_flow.md)
 
-- MoFA智能体的设计模式
-  - 设计模式
-  - reasoner
+- MoFA智能体模版
+  - [设计模式](templates/design_patterns.md)
+  - [reasoner](templates/reasoner_template.md)
   - self_refiner
   - crewai
   - ...
@@ -48,7 +48,7 @@
 
 - Hello World：最简单的端到端流程
 - 使用智能体模版
-  - reasoner的使用案例
+  - [reasoner的使用案例](examples/reasoner_example.md)
   - self_refiner的使用案例
   - actor智能体的使用案例
   - crewai智能体的使用案例
