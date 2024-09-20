@@ -19,10 +19,14 @@ tasks:
     human_input: false
 
 model:
-  model_api_key:    
-  model_name: gpt-4o-mini
+  model_api_key: null
+  model_name: qwen:7b
   model_max_tokens: 2048
-  module_api_url: null
+  module_api_url: "http://localhost:11434/v1"
+#  model_api_key:
+#  model_name: gpt-4o-mini
+#  model_max_tokens: 2048
+#  module_api_url: null
 
 #  model_api_key:
 #  model_name: moonshot-v1-32k
