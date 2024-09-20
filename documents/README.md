@@ -52,8 +52,8 @@
 案例分享
 
 - [Hello World：最简单的端到端流程](examples/hello_world.md)
-  - [Hello World, With Dora-RS & Template](examples/hello_world_1.md)
-  - [Hello World, With xMind](examples/hello_world_2.md)
+  - [Hello World, With Dora-RS & Template](examples/hello_world_dora.md)
+  - [Hello World, With xMind](examples/hello_world_mofa.md)
 
 - 使用智能体模版
   - [reasoner的使用案例](examples/reasoner_example.md)
