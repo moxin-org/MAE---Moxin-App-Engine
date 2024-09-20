@@ -21,7 +21,7 @@ class Operator:
                 yaml_file_path = get_relative_path(current_file=__file__, sibling_directory_name='configs', target_file_name='reasoner_agent_with_crewai.yml')
                 inputs = load_agent_config(yaml_file_path)
                 inputs.get('tasks')[0]['description'] = task
-                agent_result = run_dspy_or_crewai_agent(agent_config=inputs).raw
+                agent_result = run_dspy_or_crewai_agent(agent_config=inputs).raw.replace(":dataflow_statu","")
 
                 record_agent_result_log(agent_config=inputs,
                                         agent_result={

@@ -1,6 +1,3 @@
-Here’s an optimized and translated English version of your instructions based on the structure provided in the original Chinese file `README_cn.md`.
-
----
 
 # **MoFA**
 
