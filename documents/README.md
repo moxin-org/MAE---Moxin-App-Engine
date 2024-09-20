@@ -36,6 +36,10 @@
 - Web服务和API
 
 - 智能体编程
+  - [MoFA智能体的编程方式](programming/mofa_programming_methods.md)
+    - [基于DORA-RS的编程方式](programming/dora_programming.md)
+    - [机遇MoFA框架的编程方式](programming/mofa_programming.md)
+
 
 工具和技能
 
@@ -43,10 +47,14 @@
 - [Jupyter Notebook](jupyter_notebook.md) 
 - [提示工程](prompt_engineering.md) 
 - [XLang](xlang.md)
+- Debug MoFA
 
 案例分享
 
-- Hello World：最简单的端到端流程
+- [Hello World：最简单的端到端流程](examples/hello_world.md)
+  - [Hello World, With Dora-RS & Template](examples/hello_world_1.md)
+  - [Hello World, With xMind](examples/hello_world_2.md)
+
 - 使用智能体模版
   - [reasoner的使用案例](examples/reasoner_example.md)
   - self_refiner的使用案例
