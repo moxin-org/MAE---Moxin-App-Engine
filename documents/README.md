@@ -22,7 +22,7 @@
   - [设计模式](templates/design_patterns.md)
   - [reasoner](templates/reasoner_template.md)
   - [self_refine](templates/self_refine_template.md)
-  - crewai
+  - [crewai](templates/crewai_template.md)
   - ...
 
 - MoFA智能体的基本服务
