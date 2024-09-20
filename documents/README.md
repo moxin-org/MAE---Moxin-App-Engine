@@ -21,7 +21,7 @@
 - MoFA智能体模版
   - [设计模式](templates/design_patterns.md)
   - [reasoner](templates/reasoner_template.md)
-  - self_refiner
+  - [self_refine](templates/self_refine_template.md)
   - crewai
   - ...
 
@@ -42,7 +42,7 @@
 - [大模型的接入](llm_interfacing.md) 
 - [Jupyter Notebook](jupyter_notebook.md) 
 - [提示工程](prompt_engineering.md) 
-- XLang
+- [XLang](xlang.md)
 
 案例分享
 
