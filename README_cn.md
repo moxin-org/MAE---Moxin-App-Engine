@@ -68,7 +68,7 @@ cd python && pip3 install -r requirements.txt && pip3 install -e .
 ```sh
 https://www.rust-lang.org/tools/install
 ```
-
+然后安装 `cargo install dora-cli --locked`
 
 ### 2. 配置
 

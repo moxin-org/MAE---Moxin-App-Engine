@@ -3,10 +3,37 @@
 
 ### 1. 安装必要的依赖
 
+**如果你使用的是Ubuntu系统，则使用以下命令**
 ```bash
 sudo apt update
 sudo apt install -y git build-essential cmake uuid-dev libssl-dev python3-dev make
 ```
+
+
+
+**如果你使用的openeuler系统，则使用以下命令安装xlang的环境**
+```bash
+
+yum update -y
+yum groupinstall -y "Development Tools"
+yum install -y git cmake uuid-devel openssl-devel python3-devel make
+```
+**但是当前都出现以下的问题**:
+```
+[  2%] Building CXX object Main/CMakeFiles/xMind.dir/Common/utility.cpp.o
+[  2%] Building CXX object Main/CMakeFiles/xMind.dir/Log/log.cpp.o
+[  3%] Building CXX object Main/CMakeFiles/xMind.dir/main.cpp.o
+[  3%] Building CXX object Main/CMakeFiles/xMind.dir/xMindAPI.cpp.o
+[  3%] Linking CXX executable ../bin/xMind
+/usr/bin/ld: CMakeFiles/xMind.dir/main.cpp.o: in function `xMind::MindAPISet::LoadAgentFlowFromFile(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)':
+main.cpp:(.text._ZN5xMind10MindAPISet21LoadAgentFlowFromFileERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE[_ZN5xMind10MindAPISet21LoadAgentFlowFromFileERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE]+0x58): undefined reference to `xMind::Parser::ParseAgentGraphDesc(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)'
+collect2: error: ld returned 1 exit status
+make[2]: *** [Main/CMakeFiles/xMind.dir/båuild.make:241: bin/xMind] Error 1
+make[1]: *** [CMakeFiles/Makefile2:349: Main/CMakeFiles/xMind.dir/all] Error 2
+make: *** [Makefile:91: all] Error 2
+
+```
+
 
 ### 2. 克隆 xMind 仓库
 
