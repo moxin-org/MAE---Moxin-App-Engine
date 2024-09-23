@@ -6,7 +6,7 @@
 **如果你使用的是Ubuntu系统，则使用以下命令**
 ```bash
 sudo apt update
-sudo apt install -y git build-essential cmake uuid-dev libssl-dev python3-dev make
+sudo apt install -y git build-essential cmake uuid-dev libssl-dev python3-dev make python3-pip 
 ```
 
 

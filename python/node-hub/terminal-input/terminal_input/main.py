@@ -7,6 +7,7 @@ import sys
 import click
 import pyarrow as pa
 from dora import Node
+from mofa.utils.install_pkg.load_task_weaver_result import extract_important_content
 
 RUNNER_CI = True if os.getenv("CI") == "true" else False
 
@@ -31,9 +32,33 @@ def send_task_and_receive_data(node):
                     # print(f"{node_results.get('step_name')}: {results}", flush=True)
                     is_dataflow_end = node_results.get('dataflow_status', False)
                     if is_dataflow_end == False:
-                        click.echo(f"{node_results.get('step_name','')}: {results} ",)
+                        try:
+                            results_dict = json.loads(results)
+                            if results_dict.get("post_list",None) is not None:
+                                extract_important_content(results_dict)
+                            else:
+                                click.echo(f"{node_results.get('step_name','')}: {results} ",)
+                        except:
+                            click.echo(f"{node_results.get('step_name','')}: {results} ",)
+
+                        # if results.get("post_list",None) is not None:
+                        #     extract_important_content(results)
+                        # else:
+                        #     click.echo(f"{node_results.get('step_name','')}: {results} ",)
                     else:
-                        click.echo(f"{node_results.get('step_name','')}: {results} :dataflow_status",)
+                        try:
+                            results_dict = json.loads(results)
+                            if results_dict.get("post_list", None) is not None:
+                                extract_important_content(results_dict)
+                                click.echo(":dataflow_status")
+                            else:
+                                click.echo(f"{node_results.get('step_name', '')}: {results} :dataflow_status", )
+                        except Exception:
+                            click.echo(f"{node_results.get('step_name', '')}: {results} :dataflow_status", )
+                        # if results.get("post_list",None) is not None:
+                        #     extract_important_content(results)
+                        # else:
+                        #     click.echo(f"{node_results.get('step_name','')}: {results} :dataflow_status",)
                     sys.stdout.flush()
                     if is_dataflow_end:
                         break

@@ -5,3 +5,5 @@
 # agent_result = run_dspy_or_crewai_agent(agent_config)
 # print(agent_result)
 # print(agent_result)
+
+from taskweaver.app.app import TaskWeaverApp
