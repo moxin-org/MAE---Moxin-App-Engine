@@ -11,26 +11,142 @@ sudo apt install -y git build-essential cmake uuid-dev libssl-dev python3-dev ma
 
 
 
-**如果你使用的openeuler系统，则使用以下命令安装xlang的环境**
+**如果你使用的openeuler系统，则使用以下命令安装xlang以及rust的环境**
 ```bash
 
 yum update -y
 yum groupinstall -y "Development Tools"
-yum install -y git cmake uuid-devel openssl-devel python3-devel make
-```
-**但是当前都出现以下的问题**:
-```
-[  2%] Building CXX object Main/CMakeFiles/xMind.dir/Common/utility.cpp.o
-[  2%] Building CXX object Main/CMakeFiles/xMind.dir/Log/log.cpp.o
-[  3%] Building CXX object Main/CMakeFiles/xMind.dir/main.cpp.o
-[  3%] Building CXX object Main/CMakeFiles/xMind.dir/xMindAPI.cpp.o
-[  3%] Linking CXX executable ../bin/xMind
-/usr/bin/ld: CMakeFiles/xMind.dir/main.cpp.o: in function `xMind::MindAPISet::LoadAgentFlowFromFile(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)':
-main.cpp:(.text._ZN5xMind10MindAPISet21LoadAgentFlowFromFileERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE[_ZN5xMind10MindAPISet21LoadAgentFlowFromFileERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE]+0x58): undefined reference to `xMind::Parser::ParseAgentGraphDesc(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)'
-collect2: error: ld returned 1 exit status
-make[2]: *** [Main/CMakeFiles/xMind.dir/båuild.make:241: bin/xMind] Error 1
-make[1]: *** [CMakeFiles/Makefile2:349: Main/CMakeFiles/xMind.dir/all] Error 2
-make: *** [Makefile:91: all] Error 2
+yum install -y git vim cmake uuid-devel libuuid-devel openssl-devel python3-devel make
+mkdir -p /project && cd /project
+git clone https://github.com/moxin-org/mofa.git
+cd mofa && git switch feature/mofa && cd python && pip install --upgrade pip --index-url https://pypi.org/simple
+pip3 install -e . -i  https://pypi.org/simple 
+cd /project && git clone https://github.com/xlang-foundation/xMind.git 
+cd xMind/ThirdParty && git clone https://github.com/xlang-foundation/xlang.git && cd xlang && git switch Jit
+cd /project/xMind && mkdir -p out && cd out 
+
+
+# 如果openssl不存在的话 
+mkdir -p /usr/local/src 
+cd /usr/local/src
+wget https://www.openssl.org/source/openssl-3.0.8.tar.gz
+tar -xzvf openssl-3.0.8.tar.gz
+cd openssl-3.0.8
+./config --prefix=/usr/local/openssl-3.0.8 --openssldir=/usr/local/openssl-3.0.8 shared zlib
+make
+make install
+echo 'export PATH=/usr/local/openssl-3.0.8/bin:$PATH' >> /etc/profile
+echo 'export LD_LIBRARY_PATH=/usr/local/openssl-3.0.8/lib:$LD_LIBRARY_PATH' >> /etc/profile
+source /etc/profile
+
+mv /usr/bin/openssl /usr/bin/openssl.bak
+ln -s /usr/local/openssl-3.0.8/bin/openssl /usr/bin/openssl
+echo "/usr/local/openssl-3.0.8/lib" > /etc/ld.so.conf.d/openssl-3.0.8.conf
+ldconfig
+echo 'export PATH=/usr/local/openssl-3.0.8/bin:$PATH' >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH=/usr/local/openssl-3.0.8/lib:$LD_LIBRARY_PATH' >> ~/.bashrc
+echo 'export C_INCLUDE_PATH=/usr/local/openssl-3.0.8/include:$C_INCLUDE_PATH' >> ~/.bashrc
+echo 'export LIBRARY_PATH=/usr/local/openssl-3.0.8/lib:$LIBRARY_PATH' >> ~/.bashrc
+echo 'export PKG_CONFIG_PATH=/usr/local/openssl-3.0.8/lib/pkgconfig:$PKG_CONFIG_PATH' >> ~/.bashrc
+source ~/.bashrc
+
+cd /project/xMind/ThirdParty/xlang && rm -rf CMakeLists.txt 
+
+~~~
+cat <<EOL > CMakeLists.txt
+# CMakeList.txt : CMake project for X-Lang, include source and define
+# project specific logic here.
+#
+cmake_minimum_required(VERSION 3.8)
+project("xlang")
+set(CMAKE_CXX_STANDARD 20)
+
+# Set output directories
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY \${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY \${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY \${CMAKE_BINARY_DIR}/bin)
+
+# 查找 OpenSSL 3.x
+find_package(OpenSSL 3.0 REQUIRED)
+
+# To enable Link Time Optimization (LTO) for Release builds.
+if(MSVC)
+    # Enable LTO for MSVC
+    set(CMAKE_CXX_FLAGS_RELEASE "\${CMAKE_CXX_FLAGS_RELEASE} /GL")
+    set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "\${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /LTCG")
+    set(CMAKE_STATIC_LINKER_FLAGS_RELEASE "\${CMAKE_STATIC_LINKER_FLAGS_RELEASE} /LTCG")
+    set(CMAKE_MODULE_LINKER_FLAGS_RELEASE "\${CMAKE_MODULE_LINKER_FLAGS_RELEASE} /LTCG")
+    set(CMAKE_EXE_LINKER_FLAGS_RELEASE "\${CMAKE_EXE_LINKER_FLAGS_RELEASE} /LTCG")
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    # Enable LTO for GCC
+    set(CMAKE_CXX_FLAGS "\${CMAKE_CXX_FLAGS} -flto")
+    set(CMAKE_EXE_LINKER_FLAGS "\${CMAKE_EXE_LINKER_FLAGS} -flto")
+endif()
+
+include_directories(\${OPENSSL_INCLUDE_DIR})
+
+file(MAKE_DIRECTORY \${CMAKE_BINARY_DIR}/bin/Api)
+configure_file("\${PROJECT_SOURCE_DIR}/Api/value.h" "\${CMAKE_BINARY_DIR}/bin/Api/value.h")
+configure_file("\${PROJECT_SOURCE_DIR}/Api/value.cpp" "\${CMAKE_BINARY_DIR}/bin/Api/value.cpp")
+configure_file("\${PROJECT_SOURCE_DIR}/Api/xhost.h" "\${CMAKE_BINARY_DIR}/bin/Api/xhost.h")
+configure_file("\${PROJECT_SOURCE_DIR}/Api/xlang.h" "\${CMAKE_BINARY_DIR}/bin/Api/xlang.h")
+configure_file("\${PROJECT_SOURCE_DIR}/Api/xload.h" "\${CMAKE_BINARY_DIR}/bin/Api/xload.h")
+configure_file("\${PROJECT_SOURCE_DIR}/Api/xload.cpp" "\${CMAKE_BINARY_DIR}/bin/Api/xload.cpp")
+configure_file("\${PROJECT_SOURCE_DIR}/Api/xlstream.h" "\${CMAKE_BINARY_DIR}/bin/Api/xlstream.h")
+configure_file("\${PROJECT_SOURCE_DIR}/Api/xpackage.h" "\${CMAKE_BINARY_DIR}/bin/Api/xpackage.h")
+cat <<EOL > CMakeLists.txt
+# CMakeList.txt : CMake project for X-Lang, include source and define
+# project specific logic here.
+#
+cmake_minimum_required(VERSION 3.8)
+project("xlang")
+set(CMAKE_CXX_STANDARD 20)
+
+# Set output directories
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY \${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY \${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY \${CMAKE_BINARY_DIR}/bin)
+
+# 查找 OpenSSL 3.x
+find_package(OpenSSL 3.0 REQUIRED)
+
+# To enable Link Time Optimization (LTO) for Release builds.
+if(MSVC)
+    # Enable LTO for MSVC
+    set(CMAKE_CXX_FLAGS_RELEASE "\${CMAKE_CXX_FLAGS_RELEASE} /GL")
+    set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "\${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /LTCG")
+    set(CMAKE_STATIC_LINKER_FLAGS_RELEASE "\${CMAKE_STATIC_LINKER_FLAGS_RELEASE} /LTCG")
+    set(CMAKE_MODULE_LINKER_FLAGS_RELEASE "\${CMAKE_MODULE_LINKER_FLAGS_RELEASE} /LTCG")
+    set(CMAKE_EXE_LINKER_FLAGS_RELEASE "\${CMAKE_EXE_LINKER_FLAGS_RELEASE} /LTCG")
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    # Enable LTO for GCC
+    set(CMAKE_CXX_FLAGS "\${CMAKE_CXX_FLAGS} -flto")
+    set(CMAKE_EXE_LINKER_FLAGS "\${CMAKE_EXE_LINKER_FLAGS} -flto")
+endif()
+
+# 包含 OpenSSL 头文件
+include_directories(\${OPENSSL_INCLUDE_DIR})
+
+# 创建并配置 Api 目录
+file(MAKE_DIRECTORY \${CMAKE_BINARY_DIR}/bin/Api)
+configure_file("\${PROJECT_SOURCE_DIR}/Api/value.h" "\${CMAKE_BINARY_DIR}/bin/Api/value.h")
+configure_file("\${PROJECT_SOURCE_DIR}/Api/value.cpp" "\${CMAKE_BINARY_DIR}/bin/Api/value.cpp")
+configure_file("\${PROJECT_SOURCE_DIR}/Api/xhost.h" "\${CMAKE_BINARY_DIR}/bin/Api/xhost.h")
+configure_file("\${PROJECT_SOURCE_DIR}/Api/xlang.h" "\${CMAKE_BINARY_DIR}/bin/Api/xlang.h")
+configure_file("\${PROJECT_SOURCE_DIR}/Api/xload.h" "\${CMAKE_BINARY_DIR}/bin/Api/xload.h")
+configure_file("\${PROJECT_SOURCE_DIR}/Api/xload.cpp" "\${CMAKE_BINARY_DIR}/bin/Api/xload.cpp")
+configure_file("\${PROJECT_SOURCE_DIR}/Api/xlstream.h" "\${CMAKE_BINARY_DIR}/bin/Api/xlstream.h")
+configure_file("\${PROJECT_SOURCE_DIR}/Api/xpackage.h" "\${CMAKE_BINARY_DIR}/bin/Api/xpackage.h")
+
+~~~
+
+cd /project/xMind/out && cmake -DCMAKE_PREFIX_PATH=/usr/local/openssl-3.0.8 .. && make 
+
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh && \
+echo 'source "$HOME/.cargo/env"' >> ~/.bashrc && \
+source ~/.bashrc && \
+rustc --version && \
+cargo --version
 
 ```
 
