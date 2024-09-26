@@ -70,7 +70,6 @@ RUN yum update -y && \
     yum clean all
 
 
-# 克隆 xMind 和 xlang 仓库，并切换到 Jit 分支
 RUN cd /project && \
     git clone https://github.com/xlang-foundation/xMind.git && \
     cd xMind/ThirdParty && \
